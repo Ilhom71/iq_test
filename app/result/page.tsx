@@ -14,6 +14,9 @@ export default function ResultPage() {
   const [result, setResult] = useState<FinalResult | null | undefined>(undefined);
 
   useEffect(() => {
+    // localStorage faqat brauzerda mavjud — shu sababli o'qish mount
+    // bo'lgandan keyin, effect ichida amalga oshiriladi.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setResult(loadResult());
   }, []);
 

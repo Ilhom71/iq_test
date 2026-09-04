@@ -23,7 +23,9 @@ const FEEDBACK_DELAY_MS = 650;
 export default function TestPage() {
   const router = useRouter();
   const [adaptiveState, setAdaptiveState] = useState<AdaptiveState>(createInitialState);
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(() =>
+    selectNextQuestion(CATEGORY_ORDER[0], 3, [])
+  );
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [phase, setPhase] = useState<"answering" | "feedback">("answering");
   const [secondsLeft, setSecondsLeft] = useState(TEST_DURATION_SECONDS);
@@ -34,12 +36,6 @@ export default function TestPage() {
   useEffect(() => {
     stateRef.current = adaptiveState;
   }, [adaptiveState]);
-
-  // Birinchi savolni tanlash
-  useEffect(() => {
-    const first = selectNextQuestion(CATEGORY_ORDER[0], 3, []);
-    setCurrentQuestion(first);
-  }, []);
 
   const finishTest = (state: AdaptiveState) => {
     if (finishedRef.current) return;
