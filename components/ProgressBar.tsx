@@ -1,3 +1,5 @@
+import { IconClock } from "./icons";
+
 interface ProgressBarProps {
   current: number;
   total: number;
@@ -17,16 +19,21 @@ export default function ProgressBar({ current, total, secondsLeft }: ProgressBar
   return (
     <div className="w-full">
       <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
-        <span>
+        <span className="font-medium">
           Savol {Math.min(current + 1, total)} / {total}
         </span>
-        <span className={isLow ? "font-semibold text-rose-500" : ""}>
-          ⏱ {formatTime(secondsLeft)}
+        <span
+          className={`inline-flex items-center gap-1.5 ${
+            isLow ? "font-semibold text-rose-500" : ""
+          }`}
+        >
+          <IconClock className="h-4 w-4" />
+          {formatTime(secondsLeft)}
         </span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+      <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-indigo-600 to-fuchsia-600 transition-all duration-300"
+          className="h-full rounded-full bg-violet-600 transition-all duration-300"
           style={{ width: `${percent}%` }}
         />
       </div>

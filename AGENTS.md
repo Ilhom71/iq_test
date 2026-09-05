@@ -49,6 +49,34 @@ npm run lint     # ESLint
   natija sahifasida animatsiyali vizualizatsiya (gauge/donut chart).
 - Har doim yorug' fon + zamonaviy tipografiya + yetarlicha bo'sh joy (whitespace).
 
+### Dizayn tizimi (v1 redizayndan keyin qaror qilingan — shunga rioya qiling)
+
+- **Shriftlar**: jami 2 ta (`app/layout.tsx`) — sarlavhalar uchun `Sora`
+  (`font-display` klassi), matn uchun `Plus Jakarta Sans` (default `body`).
+  Standart Next.js shabloni shrifti (Geist) ishlatilmaydi. Yangi shrift
+  qo'shmang — CLAUDE.md qoidasi: max 3 ta.
+- **Ikonkalar**: hech qanday tayyor ikon kutubxona (lucide, heroicons, va
+  h.k.) ishlatilmaydi — ular Claude/ChatGPT uslubidagi ingichka chiziqli
+  ikonlarga o'xshaydi. Barcha ikonkalar qo'lda `components/icons.tsx` da,
+  ikki tonli (duotone) SVG sifatida chizilgan. Yangi ikon kerak bo'lsa — shu
+  faylga xuddi shu uslubda qo'shing, tashqi kutubxona o'rnatmang.
+- **Ranglar**: bitta gradient hamma joyda emas — har savol toifasi o'z
+  rangiga ega (`lib/theme.ts` → `CATEGORY_THEME`: naqsh=binafsha,
+  arifmetik=teal, mantiqiy=kahrabo, og'zaki=pushti-qizil). Asosiy CTA
+  tugmalar — to'q binafsha (`violet-600`), yassi rang, ortiqcha
+  linear-gradient ishlatilmaydi (faqat gauge kabi funksional joylarda
+  conic-gradient bor).
+- **Standart shablon aktivlar yo'q**: `public/` papkada Next.js/Vercel
+  default SVG (`next.svg`, `vercel.svg` va h.k.) yoki `favicon.ico`
+  bo'lmasligi kerak — `app/icon.tsx` o'zining rangli logotipini generatsiya
+  qiladi (`next/og` → `ImageResponse`).
+- **Naqsh/matritsa savollari**: `components/QuestionPrompt.tsx` savol
+  matnidagi belgi ketma-ketligini (masalan `🔺 🔵 🔺`) avtomatik chinakam
+  grid/ketma-ketlik UI sifatida chizadi (oddiy matn emas). Yangi naqsh savoli
+  qo'shganda mavjud formatga (qatorlar `\n` bilan, katakchalar bo'sh joy/`|`/
+  vergul bilan ajratiladi) rioya qiling — shunda avtomatik chiroyli grid
+  bo'lib chiqadi.
+
 ## Savollar banki va adaptiv scoring (MUHIM)
 
 - Test **adaptiv** — natija hech qachon tasodifiy/random bo'lmasin. Qiyinlik

@@ -1,17 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7fb;
-  --foreground: #14142b;
-  --brand-from: #6366f1;
-  --brand-to: #a855f7;
+  --background: #faf9fd;
+  --foreground: #181423;
+
+  /* Brend rangi — asosiy CTA va urg'u uchun */
+  --brand: #7c3aed;
+  --brand-dark: #6d28d9;
+
+  /* Toifalar bo'yicha rang-barang palitra (4 toifa = 4 aniq rang) */
+  --cat-pattern: #7c3aed; /* naqsh/matritsa — binafsha */
+  --cat-math: #0d9488; /* arifmetik — teal */
+  --cat-logical: #d97706; /* mantiqiy — kahrabo */
+  --cat-verbal: #e11d48; /* og'zaki — pushti-qizil */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
 }
 
 html {
@@ -21,4 +30,14 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+}
+
+/* Naqsh savollari uchun mayin nuqtali fon (default ikonka/shablon o'rniga) */
+.dot-grid-bg {
+  background-image: radial-gradient(currentColor 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
 }

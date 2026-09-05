@@ -36,10 +36,16 @@ export interface AdaptiveState {
   history: AnswerRecord[];
 }
 
-export function createInitialState(): AdaptiveState {
+/**
+ * Test har doim eng oson savoldan boshlanadi (difficultyLevel 1) — shundan
+ * keyin har bir to'g'ri javob qiyinlikni oshiradi, xato javob pasaytiradi.
+ * `startDifficulty` faqat natija sahifasidan "qiyinroq test" tanlanganda
+ * (avvalgi urinishning qiyinlik darajasidan) ishlatiladi.
+ */
+export function createInitialState(startDifficulty: number = 1): AdaptiveState {
   return {
     ability: INITIAL_ABILITY,
-    difficultyLevel: 3,
+    difficultyLevel: clamp(startDifficulty, 1, 5),
     usedIds: [],
     history: [],
   };
@@ -66,7 +72,10 @@ function updateAbility(ability: number, difficulty: number, correct: boolean): n
 /**
  * Keyingi savolni tanlaydi: berilgan toifada, joriy qiyinlik darajasiga eng
  * yaqin, hali ishlatilmagan savol. Agar aynan shu darajada savol qolmasa,
- * qo'shni darajalarga (±1, ±2, ...) o'tadi.
+ * qo'shni darajalarga (±1, ±2, ...) o'tadi. Bir xil masofadagi savollar
+ * bir nechta bo'lsa — ular orasidan TASODIFIY biri tanlanadi, shunda test
+ * har safar boshqacha savollar ketma-ketligi bilan o'tadi (bir xil javob
+ * yo'li bo'lsa ham savollar takrorlanib/yodlanib qolmaydi).
  */
 export function selectNextQuestion(
   category: Category,
@@ -77,16 +86,32 @@ export function selectNextQuestion(
   const pool = questions.filter((q) => q.category === category && !usedSet.has(q.id));
   if (pool.length === 0) return null;
 
-  let best: Question | null = null;
   let bestDistance = Infinity;
   for (const q of pool) {
     const distance = Math.abs(q.difficulty - difficultyLevel);
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      best = q;
-    }
+    if (distance < bestDistance) bestDistance = distance;
   }
-  return best;
+  const candidates = pool.filter((q) => Math.abs(q.difficulty - difficultyLevel) === bestDistance);
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+/** Fisher–Yates aralashtirish — massivning nusxasini tasodifiy tartibda qaytaradi. */
+function shuffle<T>(items: T[]): T[] {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+/**
+ * Har bir test boshlanishida toifalar navbatini aralashtiradi — shunda test
+ * har doim bir xil "mantiqiy → arifmetik → og'zaki → naqsh" tartibida emas,
+ * tasodifiy tartibda boshlanadi.
+ */
+export function randomCategoryOrder(): Category[] {
+  return shuffle(CATEGORY_ORDER);
 }
 
 /** Joriy state va foydalanuvchi javobiga asoslanib, keyingi state'ni hisoblaydi. */
@@ -124,6 +149,8 @@ export interface FinalResult {
   totalCorrect: number;
   totalQuestions: number;
   categoryBreakdown: CategoryBreakdown[];
+  /** Test tugagandagi qiyinlik darajasi — "qiyinroq test" taklifi shundan boshlanadi. */
+  finalDifficultyLevel: number;
 }
 
 /** Test tugagach, yakuniy IQ ball va toifalar bo'yicha statistikani hisoblaydi. */
@@ -151,6 +178,7 @@ export function computeFinalResult(state: AdaptiveState): FinalResult {
     totalCorrect,
     totalQuestions: state.history.length,
     categoryBreakdown: Array.from(breakdownMap.values()),
+    finalDifficultyLevel: state.difficultyLevel,
   };
 }
 
