@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { IconArrowRight, IconPhone, IconShield } from "@/components/icons";
+
+export const metadata: Metadata = {
+  title: "Maxfiylik siyosati",
+  description:
+    "IQ Test Online maxfiylik siyosati: ro'yxatdan o'tish talab qilinmaydi, ma'lumotlar faqat brauzeringizda saqlanadi, cookie va kuzatuv tizimlari ishlatilmaydi.",
+  alternates: { canonical: "/maxfiylik" },
+};
 
 const SECTIONS: { title: string; body: string }[] = [
   {

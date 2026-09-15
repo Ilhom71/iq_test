@@ -23,6 +23,9 @@ o'tish yo'q, ma'lumotlar bazasi yo'q — faqat "kirdi → test yechdi → natija
   localStorage, sahifa yangilansa test yo'qolmasligi uchun).
 
 Hosting — foydalanuvchi o'zi qiladi (Vercel tavsiya etiladi, lekin bu uning ishi).
+Deploy qilinganda `NEXT_PUBLIC_SITE_URL` env o'zgaruvchisini haqiqiy domenga
+o'rnating — aks holda ijtimoiy tarmoq (OG) rasmlari to'g'ri ko'rinmaydi
+(`app/layout.tsx` dagi `metadataBase`).
 
 ## 3. V1 qamrovi (hozir qilinadigan)
 
